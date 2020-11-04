@@ -50,14 +50,54 @@ void listeAdd(struct List* head, int data){
     tail->next=new;
 }
 
-void listeRemove(struct List* head, int data){
+void deleteNode(struct List **head_ref, int key) 
+{ 
+    // Store head node 
+    struct List* temp = *head_ref, *prev; 
+  
+    // If head node itself holds the key to be deleted 
+    if (temp != NULL && temp->data == key) 
+    { 
+        *head_ref = temp->next;   // Changed head 
+        free(temp);               // free old head 
+        return; 
+    } 
+  
+    // Search for the key to be deleted, keep track of the 
+    // previous node as we need to change 'prev->next' 
+    while (temp != NULL && temp->data != key) 
+    { 
+        prev = temp; 
+        temp = temp->next; 
+    } 
+  
+    // If key was not present in linked list 
+    if (temp == NULL) return; 
+  
+    // Unlink the node from linked list 
+    prev->next = temp->next; 
+  
+    free(temp);  // Free memory 
+} 
+
+
+/*struct List* listeRemove(struct List **head, int data){
     struct List* delete = (struct List*)malloc(sizeof(struct List));
+
+    // If head node itself holds the key to be deleted 
+    if (delete != NULL && delete->data == data) 
+    { 
+        *head = delete->next;   // Changed head 
+        free(delete);               // free old head 
+        return; 
+    } 
 
     //erstes Element löschen
     if( head->data == data ){
         printf("Gefunden 1: %d\n", data);
         head = head->next;
         //free(head);
+        return head;
     }
 
     //mehrere Elemente
@@ -78,7 +118,7 @@ void listeRemove(struct List* head, int data){
 
             //Speicher frei geben:
             free(delete);
-            return;
+            
         }
 
         //zu löschendes Item hat keinen Nachfolger
@@ -102,7 +142,7 @@ void listeRemove(struct List* head, int data){
 
 
     
-}
+}*/
 
 void testListe(){
     struct List* head = (struct List*)malloc(sizeof(struct List)); 
@@ -130,10 +170,14 @@ void testListe(){
     
     printf("====================\n");
 
-    listeRemove(head,1);
-    listeRemove(head,2);
-    listeRemove(head,3);
-    listeRemove(head,4);
+    //listeRemove(&head,1);
+    //listeRemove(&head,2);
+    //listeRemove(&head,3);
+    //listeRemove(&head,4);
+
+    deleteNode(&head, 3);
+    deleteNode(&head, 4);
+
     
     printf("====================\n");
     printList(head);
