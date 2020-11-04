@@ -50,12 +50,66 @@ void listeAdd(struct List* head, int data){
     tail->next=new;
 }
 
+void listeRemove(struct List* head, int data){
+    struct List* delete = (struct List*)malloc(sizeof(struct List));
+
+    //erstes Element löschen
+    if( head->data == data ){
+        printf("Gefunden 1: %d\n", data);
+        head = head->next;
+        //free(head);
+    }
+
+    //mehrere Elemente
+    while( head->next != NULL ){
+        printf("head: %d\n", head->data);
+        
+        //zu löschendes Item hat einen Nachfolger und Vorgänger
+        if( head->next->data == data ){
+            printf("Gefunden 2: %d\n", data);
+
+            //Item aus der Liste entfernen
+            //Nachfolger ermitteln
+            delete = head->next;
+            printf("Löschen: %d\n", delete->data);
+            
+            //Nachfolger neu verlinken
+            head->next = delete->next;
+
+            //Speicher frei geben:
+            free(delete);
+            return;
+        }
+
+        //zu löschendes Item hat keinen Nachfolger
+        //else if( head->next->data == data && head->next == NULL ){
+        //    printf("Gefunden else if: %d\n", data);
+        //    
+        //    //Item aus der Liste entfernen
+        //    //Nachfolger ermitteln
+        //    delete = head->next;
+        //    printf("Löschen: %d\n", delete->data);
+        //    
+        //    //Speicher frei geben:
+        //    free(delete);
+        //    return;
+        //}
+        
+        
+        head = head->next;
+        
+    }
+
+
+    
+}
+
 void testListe(){
     struct List* head = (struct List*)malloc(sizeof(struct List)); 
     
-    for(int i=0; i<10;i++){
+    for(int i=1; i<5;i++){
         //erstelle den Anfang
-        if(i==0){
+        if(i==1){
             head->data=i;
             i++;
         }
@@ -73,6 +127,16 @@ void testListe(){
 
     printList(head);
     checkIfDataExists(head,7);
+    
+    printf("====================\n");
+
+    listeRemove(head,1);
+    listeRemove(head,2);
+    listeRemove(head,3);
+    listeRemove(head,4);
+    
+    printf("====================\n");
+    printList(head);
 }
   
 int main() 
